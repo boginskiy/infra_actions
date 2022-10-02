@@ -69,3 +69,14 @@ jobs:
             sudo docker pull boginskiy/infra2
             sudo docker stop $(sudo docker ps -a -q)
             sudo docker run --rm -d -p 5000:5000 boginskiy/infra2
+  
+  send_message:
+    runs-on: ubuntu-latest
+    needs: deploy
+    steps:
+      - name: send message
+      uses: appleboy/telegram-action@master
+      with:
+        to: ${{ secrets.TELEGRAM_TO }}
+        token: ${{ secrets.TELEGRAM_TOKEN }}
+        message: ${{ github.workflow }} Ты отправил на формирование, я успешно его выполнил, делай дальше!
